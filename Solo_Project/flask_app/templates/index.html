@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        #container {
+            width: 1400px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+    </style>
+    <title>register or sign in</title>
+</head>
+<body>
+<div id = 'container'>
+    <div class = 'bg-dark text-light p-3'>
+    {%with messages = get_flashed_messages(category_filter=['register'])%}     <!-- declare a variable called messages -->
+        {% if messages %}                            <!-- check if there are any messages -->
+            {% for message in messages %}            <!-- loop through the messages -->
+                <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+        <h1>Register User</h1>
+        <form action='/register/user' method="POST">
+            <div class="form-outline mb-4">
+                <label for='name' class="form-label">First Name:</label>
+                <input type="text" name = "first_name" class="form-control">
+            </div>
+            <div class="form-outline mb-4">
+                <label for='name' class="form-label">Last Name:</label>
+                <input type="text" name = "last_name" class="form-control">
+            </div>
+            <div class="form-outline mb-4">
+                <label for='email' class="form-label"> Email:</label>
+                <input type="email" name = "email" class="form-control" >
+            </div>
+            <div class="form-outline mb-4">
+                <label for='password' class="form-label"> Password:</label>
+                <input type="password" name = "password" class="form-control">
+            </div>
+            <div class="form-outline mb-4">
+                <label for='confirm_password' class="form-label">Confirm Password:</label>
+                <input type="password" name = "confirm_password" class="form-control">
+            </div>
+            <button class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div class = 'bg-dark text-light p-3'>
+        <h1>Login</h1>
+        <form action='/login/user' method="POST">
+            {%with messages = get_flashed_messages(category_filter=['login'])%}     <!-- declare a variable called messages -->
+        {% if messages %}                            <!-- check if there are any messages -->
+            {% for message in messages %}            <!-- loop through the messages -->
+                <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+            <div class="form-outline mb-4">
+                <label for='name' class="form-label"> Email:</label>
+                <input type="email" name = "email" class="form-control" >
+            </div>
+            <div class="form-outline mb-4">
+                <label for='name' class="form-label"> Password:</label>
+                <input type="password" name = "password" class="form-control">
+            </div>
+            <button class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

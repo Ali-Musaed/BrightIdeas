@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        #main-container {
+            width: 1400px;
+        }
+        #header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-left: 20px;
+        }
+        #body-container {
+            margin: 20px 0px 0px 40px;
+        }
+        #post_one {
+            display: flex;
+            flex-direction:row;
+        }
+        #text-container{
+            border: 5px solid black;
+            height: 40px;
+            width: 700px;
+            margin-left: 70px;
+        }
+        #welcome {
+            margin-right: 100px;
+            padding: 10px;
+        }
+        #btn{
+            margin-left: 50px;
+            background-color: rgb(9, 23, 231);
+            color: white;
+            border: 3px solid black;
+            box-shadow: 5px 4px 0px black;
+            
+        }
+        #post {
+            width: 1000px;
+        }
+        #lab {
+            margin-bottom: 20px;
+        }
+        #post-container {
+            display: flex;
+            flex-direction: row;
+            margin: 30px 0px 10px 85px;
+        }
+        #post-info {
+            margin: 10px 0px 0px 20px;
+        }
+        #post-content {
+            margin: 10px 0px 10px 50px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            border: 5px solid black;
+            height: 40px;
+            width: 700px;
+        }
+        #btnTwo {
+            color: black;
+            border-radius: 50%;
+            height: 25px;
+            width: 25px;
+            border: 1px solid black;
+        }
+        #innTag {
+            margin: -8px 5px 0px -5px;
+        }
+        #likesContainer{
+            display:flex;
+            flex-direction: row;
+            margin: 0px 0px 0px 225px; 
+        }
+        #innerLikes {
+            margin-left: 30px;
+        }
+    </style>
+    <title>Post</title>
+</head>
+<body>
+    <div id = 'main-container'>
+        <div id = 'header'>
+            <p id = 'welcome'>Welcome, {{user.first_name}}</p>
+            <a href="/logout">Logout</a>
+        </div>
+        <div id = 'body-container'>
+            {%with messages = get_flashed_messages(category_filter=['content'])%}     <!-- declare a variable called messages -->
+        {% if messages %}                            <!-- check if there are any messages -->
+            {% for message in messages %}            <!-- loop through the messages -->
+                <p class = 'text-danger'>{{message}}</p>                   <!-- display each message in a paragraph tag -->
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+            <form action="/user/post" method = 'POST'>
+                <div id= 'post_one'>
+                    <input name = 'user_id' type = 'hidden' value = "{{user.id}}"> 
+                    <textarea id= 'text-container' name="content"></textarea>
+                    <button id = 'btn' class="btn border-dark">idea!</button>
+                </div>
+            </form>
+        </div>
+            {% for post in all_posts%}
+        <div id = 'post-container'>
+                <input name = 'post.id' type = 'hidden' value = "{{post.id}}"> 
+                <p id = 'post-info'><a href="/info/{{post.creator.id}}">{{post.creator.first_name}}</a> says:</p>
+                <textarea id ='post-content'>{{post.content}}</textarea>
+                {% if post.creator.id == session['user_id'] %}
+                    <a id='btnTwo' class='btn' href ="/delete/{{post.id}}"><p id='innTag'>X</p></a>
+                {% endif %}
+        </div>
+        <div id = 'likesContainer'>
+            <a href="/likes/{{post.id}}/{{session['user_id']}}/{{post.creator.id}}">Like</a>
+            <p><a href="/display/{{post.id}}/{{post.creator.id}}" id='innerLikes'>{{post.likes}} people</a> like this</p>
+        </div>
+            {% endfor %}
+    </div>
+</body>
+</html>
